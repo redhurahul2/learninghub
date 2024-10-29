@@ -5,10 +5,10 @@ WORKDIR /app
 COPY requirements.txt /app
 COPY devops /app
 
-RUN apt-get update
-RUN apt-get install -y python3 python3-pip
-RUN pip3 install -r requirements.txt
-RUN cd devops
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    apt-get install -y build-essential libssl-dev libffi-dev python3-dev && \
+    pip3 install -r requirements.txt
 
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
