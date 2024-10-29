@@ -10,16 +10,11 @@ COPY devops /app
 
 # Install the necessary packages and create a virtual environment
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-venv python3-full && \
+    apt-get install -y python3 python3-pip python3-venv && \
     python3 -m venv venv
 
-# Activate the virtual environment and install the requirements
-RUN . venv/bin/activate && \
-    pip install -r requirements.txt
+# Install the requirements inside the virtual environment
+RUN /app/venv/bin/pip install -r requirements.txt
 
-# Set the entrypoint for the application
-ENTRYPOINT ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
-
-
-
-
+# Set the entrypoint to use the Python interpreter from the virtual environment
+ENTRYPOINT ["/app/venv/bin/python", "manage.py", "runserver", "0.0.0.0:8000"]
